@@ -5,11 +5,9 @@ import { createTodoElement } from './components/todo';
 import { Todo } from './models/todo';
 import './style.css';
 import _todoListData from './values/todo.sm.json';
+import State from './utils/state';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
-const todoListData = [..._todoListData].map((todoData) => {
-  return Todo.createFromJson(todoData);
-});
 
 const getUseableId = () => {
   if (todoListData.length) {
@@ -20,7 +18,9 @@ const getUseableId = () => {
   return 1;
 };
 
-const renderUI = () => {
+const todoListState = new State<Todo[]>([]);
+
+const renderUI = (todoListData: Todo[]) => {
   console.log('renderUI', todoListData);
   //remove todo
   todoListData.every((todo: Todo, idx: number) => {
@@ -56,7 +56,7 @@ const renderUI = () => {
   todoListData.map((todo: Todo) => {
     const todoElement: HTMLDivElement = createTodoElement(todo, (todo) => {
       console.log('update target todo', todo);
-      renderUI();
+      todoListState.setState([...todoListData]);
     });
     contentElement.appendChild(todoElement);
   });
@@ -65,11 +65,20 @@ const renderUI = () => {
   const handleSearch = (title: string) => {
     //handle keyword...
     console.log(title);
-    todoListData.push(new Todo(false, getUseableId(), title, 1));
 
-    renderUI();
+    todoListState.setState([
+      ...todoListData,
+      new Todo(false, getUseableId(), title, 1),
+    ]);
   };
   app.appendChild(createFooterElement(handleSearch));
 };
 
-renderUI();
+todoListState.addObserver((todoList: Todo[]) => {
+  renderUI(todoList);
+});
+
+const todoListData = [..._todoListData].map((todoData) => {
+  return Todo.createFromJson(todoData);
+});
+todoListState.setState(todoListData);
