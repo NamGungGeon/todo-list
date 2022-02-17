@@ -74,7 +74,7 @@ body {
 
   transition: 0.3s background-color;
 }
-.todo .checkbox.checked {
+.todo.completed .checkbox {
   background-color: #8bd3e6;
 }
 
