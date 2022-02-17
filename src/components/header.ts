@@ -12,8 +12,8 @@ const getDateString = (date: Date = new Date()) => {
 };
 
 export const createHeaderElement = (todoCnt: Number): HTMLElement => {
-  const element = document.createElement("div");
-  element.setAttribute("class", "header");
+  const element = document.createElement('div');
+  element.setAttribute('class', 'header');
 
   element.innerHTML = `
     <h1>${getDateString()}</h1>

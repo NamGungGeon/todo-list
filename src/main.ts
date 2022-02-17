@@ -1,12 +1,12 @@
-import { createDividerElement } from "./components/divider";
-import { createFooterElement } from "./components/footer";
-import { createHeaderElement } from "./components/header";
-import { createTodoElement } from "./components/todo";
-import { Todo } from "./models/todo";
-import "./style.css";
-import _todoListData from "./values/todo.sm.json";
+import { createDividerElement } from './components/divider';
+import { createFooterElement } from './components/footer';
+import { createHeaderElement } from './components/header';
+import { createTodoElement } from './components/todo';
+import { Todo } from './models/todo';
+import './style.css';
+import _todoListData from './values/todo.sm.json';
 
-const app = document.querySelector<HTMLDivElement>("#app")!;
+const app = document.querySelector<HTMLDivElement>('#app')!;
 const todoListData = [..._todoListData].map((todoData) => {
   return Todo.createFromJson(todoData);
 });
@@ -21,7 +21,7 @@ const getUseableId = () => {
 };
 
 const renderUI = () => {
-  console.log("renderUI", todoListData);
+  console.log('renderUI', todoListData);
   //remove todo
   todoListData.every((todo: Todo, idx: number) => {
     //id===-1이면 삭제 버튼이 눌린 todo
@@ -33,7 +33,7 @@ const renderUI = () => {
   });
 
   //reset
-  app.innerHTML = "";
+  app.innerHTML = '';
 
   //header
   app.appendChild(createHeaderElement(todoListData.length));
@@ -42,11 +42,11 @@ const renderUI = () => {
   app.appendChild(createDividerElement());
 
   //contents
-  const contentElement = document.createElement("div");
+  const contentElement = document.createElement('div');
   app.appendChild(contentElement);
   todoListData.map((todo: Todo) => {
     const todoElement: HTMLDivElement = createTodoElement(todo, (todo) => {
-      console.log("update target todo", todo);
+      console.log('update target todo', todo);
       renderUI();
     });
     contentElement.appendChild(todoElement);

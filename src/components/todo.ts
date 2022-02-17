@@ -1,4 +1,4 @@
-import { Todo } from "../models/todo";
+import { Todo } from '../models/todo';
 
 let updateTargetTodoId = -1;
 
@@ -6,9 +6,12 @@ export const createTodoElement = (
   todo: Todo,
   handleUpdate: (todo: Todo) => void
 ): HTMLDivElement => {
-  const containerElement: HTMLDivElement = document.createElement("div");
-  containerElement.setAttribute("class", `todo ${todo.completed? 'completed': ''}`);
-  containerElement.setAttribute("id", `todo-${todo.id}`);
+  const containerElement: HTMLDivElement = document.createElement('div');
+  containerElement.setAttribute(
+    'class',
+    `todo ${todo.completed ? 'completed' : ''}`
+  );
+  containerElement.setAttribute('id', `todo-${todo.id}`);
   containerElement.innerHTML = `
     <div class='content'>
       <span class='checkbox'></span>
@@ -24,16 +27,16 @@ export const createTodoElement = (
     </div>
   `;
 
-  containerElement.querySelector(".content")!.addEventListener("click", () => {
+  containerElement.querySelector('.content')!.addEventListener('click', () => {
     todo.completed = !todo.completed;
     handleUpdate(todo);
   });
   const nextTitleInputElement: HTMLInputElement | null =
-    containerElement.querySelector(".nextTitle");
-  nextTitleInputElement?.addEventListener("click", (e: Event) => {
+    containerElement.querySelector('.nextTitle');
+  nextTitleInputElement?.addEventListener('click', (e: Event) => {
     e.stopPropagation();
   });
-  nextTitleInputElement?.addEventListener("change", () => {
+  nextTitleInputElement?.addEventListener('change', () => {
     updateTargetTodoId = -1;
 
     //not allow empty string
@@ -42,15 +45,15 @@ export const createTodoElement = (
   });
 
   containerElement
-    .querySelector(".deleteBtn")!
-    .addEventListener("click", () => {
+    .querySelector('.deleteBtn')!
+    .addEventListener('click', () => {
       //remove...
       todo.id = -1;
       handleUpdate(todo);
     });
   containerElement
-    .querySelector(".updateBtn")!
-    .addEventListener("click", () => {
+    .querySelector('.updateBtn')!
+    .addEventListener('click', () => {
       if (todo.id !== updateTargetTodoId) {
         updateTargetTodoId = todo.id;
       } else {
