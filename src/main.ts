@@ -74,11 +74,29 @@ const renderUI = (todoListData: Todo[]) => {
   app.appendChild(createFooterElement(handleSearch));
 };
 
+let savedTodoListData: any = localStorage.getItem('todoList');
+if (savedTodoListData) {
+  try {
+    savedTodoListData = JSON.parse(savedTodoListData);
+  } catch (e) {
+    console.error('savedTodoListData', 'JSON parse error', e);
+  }
+}
+const sourceTodoListData = savedTodoListData || [..._todoListData];
+const todoListData: Todo[] = sourceTodoListData
+  .map((todoData: any): Todo | null => {
+    try {
+      return Todo.createFromJson(todoData);
+    } catch (e) {
+      console.error('createFromJSON', e);
+      return null;
+    }
+  })
+  .filter((todo: Todo) => todo !== null);
+
 todoListState.addObserver((todoList: Todo[]) => {
   renderUI(todoList);
-});
 
-const todoListData = [..._todoListData].map((todoData) => {
-  return Todo.createFromJson(todoData);
+  localStorage.setItem('todoList', JSON.stringify(todoList));
 });
 todoListState.setState(todoListData);
