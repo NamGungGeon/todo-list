@@ -36,7 +36,16 @@ const renderUI = () => {
   app.innerHTML = '';
 
   //header
-  app.appendChild(createHeaderElement(todoListData.length));
+  const restTodoCnt = todoListData.reduce<number>(
+    (acc: number, todo: Todo): number => {
+      if (!todo.completed) {
+        return acc + 1;
+      }
+      return acc;
+    },
+    0
+  );
+  app.appendChild(createHeaderElement(restTodoCnt));
 
   //divider
   app.appendChild(createDividerElement());
