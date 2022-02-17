@@ -9,7 +9,9 @@ import State from './utils/state';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
-const getUseableId = () => {
+const todoListState = new State<Todo[]>([]);
+
+const getUsableTodoId = (todoListData: Todo[]) => {
   if (todoListData.length) {
     const lastTodo = todoListData[todoListData.length - 1];
     return lastTodo.id + 1;
@@ -17,8 +19,6 @@ const getUseableId = () => {
 
   return 1;
 };
-
-const todoListState = new State<Todo[]>([]);
 
 const renderUI = (todoListData: Todo[]) => {
   console.log('renderUI', todoListData);
@@ -68,7 +68,7 @@ const renderUI = (todoListData: Todo[]) => {
 
     todoListState.setState([
       ...todoListData,
-      new Todo(false, getUseableId(), title, 1),
+      new Todo(false, getUsableTodoId(todoListData), title, 1),
     ]);
   };
   app.appendChild(createFooterElement(handleSearch));
