@@ -90,6 +90,7 @@ const renderUI = (state: TodoListState) => {
     const todoElement: HTMLDivElement = createTodoElement(todo, handleUpdate);
     contentElement.appendChild(todoElement);
   });
+  if (todoList.length === 0) contentElement.remove();
 
   //divider
   app.appendChild(createDividerElement());
