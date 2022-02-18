@@ -31,11 +31,17 @@ body {
   padding: 16px;
 }
 
+.header {
+  text-align: center;
+}
 .header h1 {
   margin-bottom: 8px;
 }
 .header .msg {
   color: red;
+}
+.header .msg.clear {
+  color: green;
 }
 
 .divider {
@@ -51,6 +57,11 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  background-color: white;
+}
+.todo.fear {
+  animation: fear 0.2s infinite ease;
 }
 .todo > *:nth-child(1) {
   flex: 1;
@@ -61,7 +72,7 @@ body {
   flex-direction: row;
   align-items: center;
 }
-.todo.completed .title{
+.todo.completed .title {
   text-decoration: line-through;
   color: #333333;
 }
@@ -113,4 +124,37 @@ body {
 
 #createTodo:focus {
   border: 1px solid #ee0000;
+}
+
+#trashhole {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 16px;
+
+  border: 1px solid #a1a1a1;
+  border-radius: 8px;
+  color: #666666;
+}
+#trashhole.active {
+  border-color: #bd0000;
+  color: #bd0000;
+}
+#trashhole > * {
+  margin: 16px 0;
+}
+@keyframes fear {
+  0% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-1deg);
+  }
+  65% {
+    transform: rotate(1deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }

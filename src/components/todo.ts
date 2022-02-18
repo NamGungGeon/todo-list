@@ -11,6 +11,7 @@ export const createTodoElement = (
     'class',
     `todo ${todo.completed ? 'completed' : ''}`
   );
+  containerElement.setAttribute('draggable', `true`);
   containerElement.setAttribute('id', `todo-${todo.id}`);
   containerElement.innerHTML = `
     <div class='content'>
@@ -26,6 +27,13 @@ export const createTodoElement = (
       <button class='deleteBtn'>삭제</button>
     </div>
   `;
+  containerElement.addEventListener('dragstart', (e: DragEvent) => {
+    e.dataTransfer?.setData('todoId', todo.id.toString());
+    containerElement.classList.add('fear');
+  });
+  containerElement.addEventListener('dragend', (e: DragEvent) => {
+    containerElement.classList.remove('fear');
+  });
 
   containerElement.querySelector('.content')!.addEventListener('click', () => {
     todo.completed = !todo.completed;
