@@ -6,10 +6,16 @@ import { Todo } from './models/todo';
 import './style.css';
 import _todoListData from './values/todo.sm.json';
 import State from './utils/state';
+import { createTrashHoleElement } from './components/trashhole';
+
+type TodoListState = {
+  todoList: Todo[];
+};
+const todoListState = new State<TodoListState>({
+  todoList: [],
+});
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
-
-const todoListState = new State<Todo[]>([]);
 
 const getUsableTodoId = (todoListData: Todo[]) => {
   if (todoListData.length) {
@@ -20,13 +26,15 @@ const getUsableTodoId = (todoListData: Todo[]) => {
   return 1;
 };
 
-const renderUI = (todoListData: Todo[]) => {
+const renderUI = (state: TodoListState) => {
+  const { todoList } = state;
+
   console.log('renderUI', todoListData);
   //remove todo
-  todoListData.every((todo: Todo, idx: number) => {
+  todoList.every((todo: Todo, idx: number) => {
     //id===-1이면 삭제 버튼이 눌린 todo
     if (todo.id === -1) {
-      todoListData.splice(idx, 1);
+      todoList.splice(idx, 1);
       return false;
     }
     return true;
@@ -36,7 +44,7 @@ const renderUI = (todoListData: Todo[]) => {
   app.innerHTML = '';
 
   //header
-  const restTodoCnt = todoListData.reduce<number>(
+  const restTodoCnt = todoList.reduce<number>(
     (acc: number, todo: Todo): number => {
       if (!todo.completed) {
         return acc + 1;
@@ -50,28 +58,56 @@ const renderUI = (todoListData: Todo[]) => {
   //divider
   app.appendChild(createDividerElement());
 
-  //contents
+  //body
+  app.appendChild(
+    createTrashHoleElement((targetTodoId: number) => {
+      const fIndex = todoList.findIndex((todo: Todo) => {
+        return todo.id === targetTodoId;
+      });
+      if (fIndex !== -1) {
+        //fIndex is valid
+        const nextTodoList = [...todoList];
+        nextTodoList.splice(fIndex, 1);
+
+        todoListState.setState({
+          ...state,
+          todoList: nextTodoList,
+        });
+      }
+    })
+  );
+
   const contentElement = document.createElement('div');
   app.appendChild(contentElement);
-  todoListData.map((todo: Todo) => {
-    const todoElement: HTMLDivElement = createTodoElement(todo, (todo) => {
-      console.log('update target todo', todo);
-      todoListState.setState([...todoListData]);
+  const handleUpdate = (todo: Todo): void => {
+    console.log('update target todo', todo);
+    todoListState.setState({
+      ...state,
+      todoList: [...todoList],
     });
+  };
+  todoList.map((todo: Todo) => {
+    const todoElement: HTMLDivElement = createTodoElement(todo, handleUpdate);
     contentElement.appendChild(todoElement);
   });
 
+  //divider
+  app.appendChild(createDividerElement());
+
   //footer
-  const handleSearch = (title: string) => {
+  const handleCreateTodo = (title: string) => {
     //handle keyword...
     console.log(title);
 
-    todoListState.setState([
-      ...todoListData,
-      new Todo(false, getUsableTodoId(todoListData), title, 1),
-    ]);
+    todoListState.setState({
+      ...state,
+      todoList: [
+        ...todoList,
+        new Todo(false, getUsableTodoId(todoList), title, 1),
+      ],
+    });
   };
-  app.appendChild(createFooterElement(handleSearch));
+  app.appendChild(createFooterElement(handleCreateTodo));
 };
 
 let savedTodoListData: any = localStorage.getItem('todoList');
@@ -94,9 +130,13 @@ const todoListData: Todo[] = sourceTodoListData
   })
   .filter((todo: Todo) => todo !== null);
 
-todoListState.addObserver((todoList: Todo[]) => {
-  renderUI(todoList);
+todoListState.addObserver((state: TodoListState) => {
+  const { todoList } = state;
+  renderUI(state);
 
   localStorage.setItem('todoList', JSON.stringify(todoList));
 });
-todoListState.setState(todoListData);
+
+todoListState.setState({
+  todoList: todoListData,
+});
