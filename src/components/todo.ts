@@ -4,7 +4,8 @@ let updateTargetTodoId = -1;
 
 export const createTodoElement = (
   todo: Todo,
-  handleUpdate: (todo: Todo) => void
+  handleUpdate: (todo: Todo) => void,
+  handleSwap: (todo: Todo, droppedTodoId: number) => void
 ): HTMLDivElement => {
   const containerElement: HTMLDivElement = document.createElement('div');
   containerElement.setAttribute(
@@ -33,6 +34,24 @@ export const createTodoElement = (
   });
   containerElement.addEventListener('dragend', (e: DragEvent) => {
     containerElement.classList.remove('fear');
+  });
+
+  containerElement.addEventListener('drop', (e: DragEvent) => {
+    e.preventDefault();
+    const targetTodoId: number = Number(e.dataTransfer?.getData('todoId') || 0);
+    if (targetTodoId > 0) {
+      //valid
+      handleSwap(todo, targetTodoId);
+    }
+  });
+  containerElement.addEventListener('dragover', (e: Event) => {
+    e.preventDefault();
+
+    containerElement.classList.add('swap');
+  });
+  containerElement.addEventListener('dragleave', (e: Event) => {
+    e.preventDefault();
+    containerElement.classList.remove('swap');
   });
 
   containerElement.querySelector('.content')!.addEventListener('click', () => {

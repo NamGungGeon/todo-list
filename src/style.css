@@ -60,7 +60,10 @@ body {
 
   background-color: white;
 }
-.todo.fear {
+.todo.swap {
+  background-color: #f1f1f1;
+}
+.todo.fear .title {
   animation: fear 0.2s infinite ease;
 }
 .todo > *:nth-child(1) {

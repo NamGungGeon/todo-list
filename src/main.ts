@@ -86,8 +86,35 @@ const renderUI = (state: TodoListState) => {
       todoList: [...todoList],
     });
   };
+  const handleSwap = (todo: Todo, droppedTodoId: number) => {
+    console.log('handleSwap');
+    const currentTodoId = todo.id;
+
+    const targetIndexes = [
+      todoList.findIndex((todo) => todo.id === currentTodoId),
+      todoList.findIndex((todo) => todo.id === droppedTodoId),
+    ];
+    if (targetIndexes[0] !== -1 && targetIndexes[1] !== -1) {
+      //valid
+
+      const nextTodoList = [...todoList];
+      const tmp = nextTodoList[targetIndexes[0]];
+
+      nextTodoList[targetIndexes[0]] = nextTodoList[targetIndexes[1]];
+      nextTodoList[targetIndexes[1]] = tmp;
+
+      todoListState.setState({
+        ...state,
+        todoList: nextTodoList,
+      });
+    }
+  };
   todoList.map((todo: Todo) => {
-    const todoElement: HTMLDivElement = createTodoElement(todo, handleUpdate);
+    const todoElement: HTMLDivElement = createTodoElement(
+      todo,
+      handleUpdate,
+      handleSwap
+    );
     contentElement.appendChild(todoElement);
   });
   if (todoList.length === 0) contentElement.remove();
