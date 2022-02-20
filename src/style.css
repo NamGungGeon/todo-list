@@ -13,7 +13,7 @@ body {
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -51,8 +51,43 @@ body {
   background-color: #e9e9e9;
 }
 
+.todoStyleOptions {
+  text-align: right;
+}
+.todoStyleOptions > button {
+  margin: 4px 0;
+  padding: 2px 4px;
+  background-color: #e8eeff;
+  color: #6094ff;
+  border-radius: 2px;
+  border: none;
+
+  cursor: pointer;
+  width: 72px;
+}
+
+.todolist {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+
+  flex-wrap: wrap;
+}
+
+.todolist.listing-vertical .todo {
+  width: 100%;
+}
+.todolist.listing-grid {
+  align-items: flex-start;
+}
+.todolist.listing-grid .todo {
+  align-items: flex-start;
+  flex-direction: column;
+  width: calc(100% / 3);
+}
+
 .todo {
-  padding: 16px 0;
+  padding: 16px;
 
   display: flex;
   flex-direction: row;
@@ -60,7 +95,10 @@ body {
 
   background-color: white;
 }
-.todo.fear {
+.todo.swap {
+  background-color: #f1f1f1;
+}
+.todo.fear .title {
   animation: fear 0.2s infinite ease;
 }
 .todo > *:nth-child(1) {
@@ -71,6 +109,11 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.todo .title {
+  flex: 1;
+
+  word-break: break-word;
 }
 .todo.completed .title {
   text-decoration: line-through;
@@ -98,6 +141,9 @@ body {
   width: 100%;
   padding: 8px;
   font-size: 1.1rem;
+}
+.todo .options {
+  align-self: flex-end;
 }
 .todo .options > button {
   margin: 4px;
@@ -151,7 +197,7 @@ body {
   35% {
     transform: rotate(-1deg);
   }
-  65% {
+  70% {
     transform: rotate(1deg);
   }
   100% {
