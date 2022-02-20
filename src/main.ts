@@ -10,9 +10,11 @@ import { createTrashHoleElement } from './components/trashhole';
 
 type TodoListState = {
   todoList: Todo[];
+  listingStyle: 'listing-vertical' | 'listing-grid';
 };
 const todoListState = new State<TodoListState>({
   todoList: [],
+  listingStyle: 'listing-vertical',
 });
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
@@ -27,7 +29,7 @@ const getUsableTodoId = (todoListData: Todo[]) => {
 };
 
 const renderUI = (state: TodoListState) => {
-  const { todoList } = state;
+  const { todoList, listingStyle } = state;
 
   console.log('renderUI', todoListData);
   //remove todo
@@ -77,8 +79,36 @@ const renderUI = (state: TodoListState) => {
     })
   );
 
-  const contentElement = document.createElement('div');
-  app.appendChild(contentElement);
+  const todoStyleOptionsElement = document.createElement('div');
+  todoStyleOptionsElement.classList.add('todoStyleOptions');
+  todoStyleOptionsElement.innerHTML = `
+    <button id="listingRowButton">리스트보기</button>
+    &nbsp;&nbsp;
+    <button id="listingColumnButton">격자보기</button>
+  `;
+  todoStyleOptionsElement
+    .querySelector('#listingRowButton')!
+    .addEventListener('click', () => {
+      todoListState.setState({
+        ...state,
+        listingStyle: 'listing-vertical',
+      });
+    });
+  todoStyleOptionsElement
+    .querySelector('#listingColumnButton')!
+    .addEventListener('click', () => {
+      todoListState.setState({
+        ...state,
+        listingStyle: 'listing-grid',
+      });
+    });
+  app.appendChild(todoStyleOptionsElement);
+
+  const todolistElement = document.createElement('div');
+  todolistElement.classList.add('todolist');
+  todolistElement.classList.add(listingStyle);
+
+  app.appendChild(todolistElement);
   const handleUpdate = (todo: Todo): void => {
     console.log('update target todo', todo);
     todoListState.setState({
@@ -115,9 +145,9 @@ const renderUI = (state: TodoListState) => {
       handleUpdate,
       handleSwap
     );
-    contentElement.appendChild(todoElement);
+    todolistElement.appendChild(todoElement);
   });
-  if (todoList.length === 0) contentElement.remove();
+  if (todoList.length === 0) todolistElement.remove();
 
   //divider
   app.appendChild(createDividerElement());
@@ -167,4 +197,5 @@ todoListState.addObserver((state: TodoListState) => {
 
 todoListState.setState({
   todoList: todoListData,
+  listingStyle: 'listing-vertical',
 });
