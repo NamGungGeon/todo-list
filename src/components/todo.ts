@@ -21,7 +21,7 @@ export const createTodoElement = (
       ${
         todo.id === updateTargetTodoId
           ? `<input type='text' value='${todo.title}' class='nextTitle' placeholder='할 일을 입력하세요'/>`
-          : `<h3 class="title">${todo.title}</h3>`
+          : `<h3 class="title"><span>${todo.title}</span></h3>`
       }
     </div>
     <div class='options'>

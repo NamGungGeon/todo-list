@@ -93,6 +93,10 @@ body {
 .todolist.listing-vertical .todo {
   width: 100%;
 }
+
+.todolist.listing-vertical .todo > *:nth-child(1) {
+  flex: 1;
+}
 .todolist.listing-grid {
   align-items: flex-start;
 }
@@ -113,15 +117,18 @@ body {
 
   background-color: white;
 }
+.todo > *:nth-child(1) {
+  cursor: pointer;
+}
 .todo.swap {
   background-color: #f1f1f1;
 }
-.todo.viberate .title {
+.todo.viberate .title > span {
   animation: viberate 0.2s infinite ease;
 }
-.todo > *:nth-child(1) {
-  flex: 1;
-  cursor: pointer;
+
+.todo .title > span {
+  display: inline-block;
 }
 .todo > * {
   display: flex;
@@ -129,9 +136,8 @@ body {
   align-items: center;
 }
 .todo .title {
-  flex: 1;
-
   word-break: break-word;
+  flex: 1;
 }
 .todo.completed .title {
   text-decoration: line-through;
@@ -215,10 +221,10 @@ body {
     transform: rotate(0deg);
   }
   35% {
-    transform: rotate(-1deg);
+    transform: rotate(-5deg);
   }
   70% {
-    transform: rotate(1deg);
+    transform: rotate(5deg);
   }
   100% {
     transform: rotate(0deg);
