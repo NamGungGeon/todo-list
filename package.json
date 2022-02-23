@@ -6,12 +6,13 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "format": "prettier --write src/**/*"
+    "format": "prettier --write src/**/*",
+    "jserver": "json-server --watch src/values/todo.jserver.json --port=3001"
   },
   "devDependencies": {
+    "json-server": "^0.17.0",
     "prettier": "^2.5.1",
     "typescript": "^4.5.4",
     "vite": "^2.8.0"
-  },
-  "dependencies": {}
+  }
 }
