@@ -6,7 +6,7 @@ import { createHeaderElement } from './components/header';
 import { createTodoElement } from './components/todo';
 import { Todo } from './models/todo';
 import _todoListData from './values/todo.sm.json';
-import State from './utils/state';
+import State from './state';
 import { createTrashHoleElement } from './components/trashhole';
 import { createTodoViewOptionElement } from './components/viewOptions';
 import { getTodoList } from './http/todo';
