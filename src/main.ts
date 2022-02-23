@@ -1,13 +1,15 @@
+import './style.css';
+
 import { createDividerElement } from './components/divider';
 import { createFooterElement } from './components/footer';
 import { createHeaderElement } from './components/header';
 import { createTodoElement } from './components/todo';
 import { Todo } from './models/todo';
-import './style.css';
 import _todoListData from './values/todo.sm.json';
 import State from './utils/state';
 import { createTrashHoleElement } from './components/trashhole';
 import { createTodoViewOptionElement } from './components/viewOptions';
+import { getTodoList } from './http/todo';
 
 type TodoListState = {
   todoList: Todo[];
@@ -182,7 +184,21 @@ todoListState.addObserver((state: TodoListState) => {
   localStorage.setItem('todoList', JSON.stringify(todoList));
 });
 
-todoListState.setState({
-  todoList: todoListData,
-  listingStyle: 'listing-vertical',
-});
+getTodoList()
+  .then((todoList: Todo[]) => {
+    todoListState.setState({
+      todoList: todoList.map((todo) => Todo.createFromJson(todo)),
+      listingStyle: 'listing-vertical',
+    });
+  })
+  .catch((e) => {
+    console.error(e);
+    app.innerHTML = `
+      <p>json-server가 동작하지 않는 것 같습니다</p>
+      <br/>
+
+      <pre>
+        ${e.toString().trim()}
+      </pre>
+    `;
+  });
