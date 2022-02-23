@@ -49,7 +49,7 @@ const renderUI = (state: TodoListStateType) => {
   app.appendChild(createTrashHoleElement(handleRemove));
   const todoViewOptionsElement = createTodoViewOptionElement(
     listingStyle,
-    todoListState.setListingStyle
+    (listingStyle) => todoListState.setListingStyle(listingStyle)
   );
   app.appendChild(todoViewOptionsElement);
 
@@ -76,9 +76,9 @@ const renderUI = (state: TodoListStateType) => {
     .map((todo: Todo) => {
       const todoElement: HTMLDivElement = createTodoElement(
         todo,
-        todoListState.update,
+        (todo) => todoListState.update(todo),
         handleSwap,
-        todoListState.remove
+        (todo) => todoListState.remove(todo)
       );
       todolistElement.appendChild(todoElement);
     });
