@@ -104,10 +104,11 @@ body {
   align-items: flex-start;
   flex-direction: column;
   width: calc(100% / 3);
+  min-height: 128px;
+  justify-content: space-between;
 }
 
 .todo {
-  min-height: 128px;
   min-width: 200px;
   padding: 16px;
 
