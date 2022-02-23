@@ -7,6 +7,7 @@ import './style.css';
 import _todoListData from './values/todo.sm.json';
 import State from './utils/state';
 import { createTrashHoleElement } from './components/trashhole';
+import { createTodoViewOptionElement } from './components/viewOptions';
 
 type TodoListState = {
   todoList: Todo[];
@@ -79,30 +80,16 @@ const renderUI = (state: TodoListState) => {
     })
   );
 
-  const todoStyleOptionsElement = document.createElement('div');
-  todoStyleOptionsElement.classList.add('todoStyleOptions');
-  todoStyleOptionsElement.innerHTML = `
-    <button id="listingRowButton">리스트보기</button>
-    &nbsp;&nbsp;
-    <button id="listingColumnButton">격자보기</button>
-  `;
-  todoStyleOptionsElement
-    .querySelector('#listingRowButton')!
-    .addEventListener('click', () => {
+  const todoViewOptionsElement = createTodoViewOptionElement(
+    listingStyle,
+    (listingStyle) => {
       todoListState.setState({
         ...state,
-        listingStyle: 'listing-vertical',
+        listingStyle,
       });
-    });
-  todoStyleOptionsElement
-    .querySelector('#listingColumnButton')!
-    .addEventListener('click', () => {
-      todoListState.setState({
-        ...state,
-        listingStyle: 'listing-grid',
-      });
-    });
-  app.appendChild(todoStyleOptionsElement);
+    }
+  );
+  app.appendChild(todoViewOptionsElement);
 
   const todolistElement = document.createElement('div');
   todolistElement.classList.add('todolist');
