@@ -120,13 +120,26 @@ const renderUI = (state: TodoListState) => {
       todoList.findIndex((todo) => todo.id === droppedTodoId),
     ];
     if (targetIndexes[0] !== -1 && targetIndexes[1] !== -1) {
+      if (targetIndexes[0] === targetIndexes[1]) return;
       //valid
-
       const nextTodoList = [...todoList];
-      const tmp = nextTodoList[targetIndexes[0]];
 
-      nextTodoList[targetIndexes[0]] = nextTodoList[targetIndexes[1]];
-      nextTodoList[targetIndexes[1]] = tmp;
+      const tmpOrderId = nextTodoList[targetIndexes[0]].orderId;
+      nextTodoList[targetIndexes[0]].orderId =
+        nextTodoList[targetIndexes[1]].orderId;
+      nextTodoList[targetIndexes[1]].orderId = tmpOrderId;
+
+      Promise.all(
+        targetIndexes.map((index: number) => {
+          return updateTodo(nextTodoList[index]);
+        })
+      )
+        .then((result) => {
+          console.log('swapped', result);
+        })
+        .catch((e) => {
+          console.error('swap error', e);
+        });
 
       todoListState.setState({
         ...state,
@@ -134,15 +147,17 @@ const renderUI = (state: TodoListState) => {
       });
     }
   };
-  todoList.map((todo: Todo) => {
-    const todoElement: HTMLDivElement = createTodoElement(
-      todo,
-      handleUpdate,
-      handleSwap,
-      (todo) => handleRemove(todo.id)
-    );
-    todolistElement.appendChild(todoElement);
-  });
+  todoList
+    .sort((t1, t2) => t1.orderId - t2.orderId)
+    .map((todo: Todo) => {
+      const todoElement: HTMLDivElement = createTodoElement(
+        todo,
+        handleUpdate,
+        handleSwap,
+        (todo) => handleRemove(todo.id)
+      );
+      todolistElement.appendChild(todoElement);
+    });
   if (todoList.length === 0) todolistElement.remove();
 
   //divider
@@ -152,7 +167,13 @@ const renderUI = (state: TodoListState) => {
   const handleCreateTodo = (title: string) => {
     //handle keyword...
     console.log(title);
-    const newTodo = new Todo(false, getUsableTodoId(todoList), title, 1);
+    const newTodo = new Todo(
+      false,
+      getUsableTodoId(todoList),
+      title,
+      1,
+      undefined
+    );
     createTodo(newTodo)
       .then(() => {
         console.log('created');
