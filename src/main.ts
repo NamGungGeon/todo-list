@@ -4,7 +4,7 @@ import { createDividerElement } from './components/divider';
 import { createFooterElement } from './components/footer';
 import { createHeaderElement } from './components/header';
 import { createTodoElement } from './components/todo';
-import { Todo } from './models/todo';
+import { Todo } from './models/Todo';
 import _todoListData from './values/todo.sm.json';
 import State from './state';
 import { createTrashHoleElement } from './components/trashhole';

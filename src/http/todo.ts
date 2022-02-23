@@ -1,5 +1,5 @@
 import http from '.';
-import { Todo } from '../models/todo';
+import { Todo } from '../models/Todo';
 
 const host = `http://localhost:3001`;
 
