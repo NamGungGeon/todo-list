@@ -12,6 +12,20 @@ body {
   background-color: #f1f1f1;
 
   min-width: 512px;
+
+  animation: wave 3s infinite ease;
+}
+@keyframes wave {
+  0% {
+    background-color: #f1f1f1;
+  }
+  50% {
+    background-color: #ffffff;
+  }
+
+  100% {
+    background-color: #f1f1f1;
+  }
 }
 
 #app {
