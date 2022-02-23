@@ -17,15 +17,6 @@ const renderUI = (state: TodoListStateType) => {
   const { todoList, listingStyle } = state;
 
   console.log('renderUI', todoList);
-  //remove todo
-  todoList.every((todo: Todo, idx: number) => {
-    //id===-1이면 삭제 버튼이 눌린 todo
-    if (todo.id === -1) {
-      todoList.splice(idx, 1);
-      return false;
-    }
-    return true;
-  });
 
   //reset
   app.innerHTML = '';

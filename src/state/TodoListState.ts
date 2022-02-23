@@ -66,7 +66,6 @@ export default class TodoListState extends State<TodoListStateType> {
   }
 
   swapOrder(t1_idx: number, t2_idx: number) {
-    if (t1_idx === t2_idx) return;
     //valid
     const nextTodoList = [...this.state.todoList];
 
