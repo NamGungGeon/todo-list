@@ -8,12 +8,27 @@ export const getTodoList = (): Promise<Todo[]> => {
 };
 
 export const createTodo = (todo: Todo) => {
-  console.log(JSON.stringify(todo));
   return http(`${host}/todolist`, {
     method: 'POST',
     body: JSON.stringify(todo),
     headers: {
       'Content-Type': 'application/json',
     },
+  });
+};
+
+export const updateTodo = (todo: Todo) => {
+  return http(`${host}/todolist/${todo.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(todo),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+export const deleteTodo = (todo: Todo) => {
+  return http(`${host}/todolist/${todo.id}`, {
+    method: 'DELETE',
   });
 };

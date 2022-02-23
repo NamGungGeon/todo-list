@@ -5,7 +5,8 @@ let updateTargetTodoId = -1;
 export const createTodoElement = (
   todo: Todo,
   handleUpdate: (todo: Todo) => void,
-  handleSwap: (todo: Todo, droppedTodoId: number) => void
+  handleSwap: (todo: Todo, droppedTodoId: number) => void,
+  handleRemove: (todo: Todo) => void
 ): HTMLDivElement => {
   const containerElement: HTMLDivElement = document.createElement('div');
   containerElement.setAttribute(
@@ -74,9 +75,7 @@ export const createTodoElement = (
   containerElement
     .querySelector('.deleteBtn')!
     .addEventListener('click', () => {
-      //remove...
-      todo.id = -1;
-      handleUpdate(todo);
+      handleRemove(todo);
     });
   containerElement
     .querySelector('.updateBtn')!

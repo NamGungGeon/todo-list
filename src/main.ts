@@ -9,7 +9,7 @@ import _todoListData from './values/todo.sm.json';
 import State from './state';
 import { createTrashHoleElement } from './components/trashhole';
 import { createTodoViewOptionElement } from './components/viewOptions';
-import { createTodo, getTodoList } from './http/todo';
+import { createTodo, deleteTodo, getTodoList, updateTodo } from './http/todo';
 
 type TodoListState = {
   todoList: Todo[];
@@ -64,23 +64,25 @@ const renderUI = (state: TodoListState) => {
   app.appendChild(createDividerElement());
 
   //body
-  app.appendChild(
-    createTrashHoleElement((targetTodoId: number) => {
-      const fIndex = todoList.findIndex((todo: Todo) => {
-        return todo.id === targetTodoId;
-      });
-      if (fIndex !== -1) {
-        //fIndex is valid
-        const nextTodoList = [...todoList];
-        nextTodoList.splice(fIndex, 1);
+  const handleRemove = (targetTodoId: number) => {
+    const fIndex = todoList.findIndex((todo: Todo) => {
+      return todo.id === targetTodoId;
+    });
+    if (fIndex !== -1) {
+      deleteTodo(todoList[fIndex])
+        .then(() => {
+          const nextTodoList = [...todoList];
+          nextTodoList.splice(fIndex, 1);
 
-        todoListState.setState({
-          ...state,
-          todoList: nextTodoList,
-        });
-      }
-    })
-  );
+          todoListState.setState({
+            ...state,
+            todoList: nextTodoList,
+          });
+        })
+        .catch(console.error);
+    }
+  };
+  app.appendChild(createTrashHoleElement(handleRemove));
 
   const todoViewOptionsElement = createTodoViewOptionElement(
     listingStyle,
@@ -100,10 +102,14 @@ const renderUI = (state: TodoListState) => {
   app.appendChild(todolistElement);
   const handleUpdate = (todo: Todo): void => {
     console.log('update target todo', todo);
-    todoListState.setState({
-      ...state,
-      todoList: [...todoList],
-    });
+    updateTodo(todo)
+      .then(() => {
+        todoListState.setState({
+          ...state,
+          todoList: [...todoList],
+        });
+      })
+      .catch(console.error);
   };
   const handleSwap = (todo: Todo, droppedTodoId: number) => {
     console.log('handleSwap');
@@ -132,7 +138,8 @@ const renderUI = (state: TodoListState) => {
     const todoElement: HTMLDivElement = createTodoElement(
       todo,
       handleUpdate,
-      handleSwap
+      handleSwap,
+      (todo) => handleRemove(todo.id)
     );
     todolistElement.appendChild(todoElement);
   });
