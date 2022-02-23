@@ -136,6 +136,8 @@ body {
   margin-right: 8px;
 
   transition: 0.3s background-color;
+
+  align-self: flex-start;
 }
 .todo.completed .checkbox {
   background-color: #8bd3e6;
