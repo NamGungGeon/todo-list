@@ -9,7 +9,7 @@ import _todoListData from './values/todo.sm.json';
 import State from './state';
 import { createTrashHoleElement } from './components/trashhole';
 import { createTodoViewOptionElement } from './components/viewOptions';
-import { getTodoList } from './http/todo';
+import { createTodo, getTodoList } from './http/todo';
 
 type TodoListState = {
   todoList: Todo[];
@@ -145,14 +145,18 @@ const renderUI = (state: TodoListState) => {
   const handleCreateTodo = (title: string) => {
     //handle keyword...
     console.log(title);
-
-    todoListState.setState({
-      ...state,
-      todoList: [
-        ...todoList,
-        new Todo(false, getUsableTodoId(todoList), title, 1),
-      ],
-    });
+    const newTodo = new Todo(false, getUsableTodoId(todoList), title, 1);
+    createTodo(newTodo)
+      .then(() => {
+        console.log('created');
+        todoListState.setState({
+          ...state,
+          todoList: [...todoList, newTodo],
+        });
+      })
+      .catch((e) => {
+        console.error('createTodo', e);
+      });
   };
   app.appendChild(createFooterElement(handleCreateTodo));
 };
@@ -196,7 +200,6 @@ getTodoList()
     app.innerHTML = `
       <p>json-server가 동작하지 않는 것 같습니다</p>
       <br/>
-
       <pre>
         ${e.toString().trim()}
       </pre>
