@@ -5,7 +5,7 @@ let updateTargetTodoId = -1;
 export const createTodoElement = (
   todo: Todo,
   handleUpdate: (todo: Todo) => void,
-  handleSwap: (todo: Todo, droppedTodoId: number) => void,
+  handleSwap: (currentodo: Todo, droppedTodoId: number) => void,
   handleRemove: (todo: Todo) => void
 ): HTMLDivElement => {
   const containerElement: HTMLDivElement = document.createElement('div');

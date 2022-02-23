@@ -1,7 +1,7 @@
 export type Observer<T> = (state: T) => void;
 
 export default class State<T> {
-  private state: T;
+  state: T;
   private observers: Observer<T>[] = [];
   constructor(initialState: T) {
     this.state = initialState;
