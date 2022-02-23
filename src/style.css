@@ -15,7 +15,7 @@ body {
 }
 
 #app {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -101,8 +101,8 @@ body {
 .todo.swap {
   background-color: #f1f1f1;
 }
-.todo.fear .title {
-  animation: fear 0.2s infinite ease;
+.todo.viberate .title {
+  animation: viberate 0.2s infinite ease;
 }
 .todo > *:nth-child(1) {
   flex: 1;
@@ -193,7 +193,7 @@ body {
 #trashhole > * {
   margin: 16px 0;
 }
-@keyframes fear {
+@keyframes viberate {
   0% {
     transform: rotate(0deg);
   }

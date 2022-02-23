@@ -30,10 +30,10 @@ export const createTodoElement = (
   `;
   containerElement.addEventListener('dragstart', (e: DragEvent) => {
     e.dataTransfer?.setData('todoId', todo.id.toString());
-    containerElement.classList.add('fear');
+    containerElement.classList.add('viberate');
   });
   containerElement.addEventListener('dragend', (e: DragEvent) => {
-    containerElement.classList.remove('fear');
+    containerElement.classList.remove('viberate');
   });
 
   containerElement.addEventListener('drop', (e: DragEvent) => {
