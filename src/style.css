@@ -89,6 +89,7 @@ body {
 }
 
 .todo {
+  min-height: 128px;
   min-width: 200px;
   padding: 16px;
 
