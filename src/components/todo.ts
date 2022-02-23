@@ -19,7 +19,7 @@ export const createTodoElement = (
       <span class='checkbox'></span>
       ${
         todo.id === updateTargetTodoId
-          ? `<input type='text' value='${todo.title}' class='nextTitle' placeholder='변경할 이름을 입력하세요'/>`
+          ? `<input type='text' value='${todo.title}' class='nextTitle' placeholder='할 일을 입력하세요'/>`
           : `<h3 class="title">${todo.title}</h3>`
       }
     </div>
